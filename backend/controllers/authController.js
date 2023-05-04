@@ -8,16 +8,16 @@ const userRegister = async (req, res) => {
     const { name, email, password } = req.body
     
     if (!name || !email) {
-        res.status(400)
-        throw new Error('please include')
+        return res.status(404).send("User form empty")
+        //throw new Error('please include')
     }
 
     // Check if user exists
     const userExists = await User.findOne({ email })
 
     if (userExists) {
-        res.status(400)
-        throw new Error('User already exists')
+         return res.status(404).send("User already exists")
+        //throw new Error('User already exists')
     }
 
     const hashPassword = bcrypt.hashSync(password, 8)
@@ -55,7 +55,14 @@ const userLogin = async (req, res) => {
         if (!isCorrect) return res.status(404).send("Password not found")
    
         const token = createJWT(user._id)
-        res.cookie("accessToken", token, { httpOnly: true }).status(200).send(user)
+        res.cookie("accessToken", token, { httpOnly: true }).status(200)
+
+        res.status(201).json({
+            _id:  user.id,
+            name: user.name,
+            email: user.email,
+            token: token
+        })
         
     } catch (e) {
          res.status(500).send("User error")

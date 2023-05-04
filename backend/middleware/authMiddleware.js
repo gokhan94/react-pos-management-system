@@ -14,12 +14,14 @@ const verifyToken = async (req, res, next) => {
         
         } catch (error) {
             console.log(error)
-            res.status(401)
-            throw new Error('Not Auth')
+            return res.status(404).send("Not auth")
+            //res.status(401)
+            //throw new Error('Not Auth')
         }
     } else {
-        res.status(401)
-        throw new Error('Not Token')
+            return res.status(404).send("Not token")
+        //res.status(401)
+        //throw new Error('Not Token')
     }
 
 
