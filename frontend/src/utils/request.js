@@ -14,7 +14,7 @@ const httpRequest = axios.create({
         "Access-Control-Allow-Origin": "*",
         "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS"
     },
-    baseURL: "https://react-pos-management-system.vercel.app/api",
+    baseURL: "https://react-pos-management-system-qmcf.vercel.app/api",
     withCredentials: false,
 })
 
