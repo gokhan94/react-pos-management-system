@@ -56,10 +56,8 @@ const userLogin = async (req, res) => {
    
         const token = createJWT(user._id)
         res.cookie("accessToken", token, {
-            httpOnly: true,
-            sameSite: 'strict',
+           
             maxAge: 30 * 24 * 60 * 60 * 1000,
-            domain: "vercel.app"
         }).status(200)
 
         res.status(201).json({
