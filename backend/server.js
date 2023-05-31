@@ -14,12 +14,13 @@ connectDatabase()
 
 const app = express()
 
-const corsOptions = {
+/*const corsOptions = {
     origin:'http://localhost:3000', 
     credentials:true,  //access-control-allow-credentials:true
 }
 
-app.use(cors(corsOptions))
+app.use(cors(corsOptions))*/
+app.use(cors())
 
 app.use(cookieParser())
 app.use(express.json())
