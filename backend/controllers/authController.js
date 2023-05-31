@@ -56,7 +56,7 @@ const userLogin = async (req, res) => {
    
         const token = createJWT(user._id)
         res.cookie("accessToken", token, {
-            domain: 'https://react-pos-management-system.vercel.app/',
+            domain: '.react-pos-management-system-qmcf.com',
             httpOnly: true,
             sameSite: 'none',
             maxAge: 30 * 24 * 60 * 60 * 1000,
