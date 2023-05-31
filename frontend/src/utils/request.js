@@ -12,7 +12,7 @@ const httpRequest = axios.create({
          "Content-Type": "application/json"
     },
     baseURL: "https://react-pos-management-system.vercel.app/api",
-    withCredentials: false,
+    withCredentials: true,
 })
 
 export default httpRequest
