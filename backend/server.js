@@ -22,7 +22,7 @@ const app = express()
 
 app.use(cors(corsOptions))*/
 const corsOrigin ={
-    origin:'https://react-pos-management-system.vercel.app', 
+    origin:'*', 
     credentials:false,            
     optionSuccessStatus:200
 }
