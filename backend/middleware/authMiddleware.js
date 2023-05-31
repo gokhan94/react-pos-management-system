@@ -1,4 +1,3 @@
-const jwt = require('jsonwebtoken')
 const User = require('../models/userModel')
 const { verifyJWT } = require('../utils/jwt')
 

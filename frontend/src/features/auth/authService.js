@@ -1,6 +1,4 @@
-//import axios from 'axios'
 import httpRequest from '../../utils/request'
-import {deleteLocalStorageUser} from '../../utils/localStorage'
 //const API_URL = '/api/auth/register'
 
 const register = async (user) => {
@@ -13,14 +11,20 @@ const login = async (user) => {
     return response.data
 }
 
-const logout = () => {
-   deleteLocalStorageUser()
+const logout = async () => {
+    const response = await httpRequest.post("/auth/logout")
+    return response.data
 }
 
+const allUsers = async () => {
+    const response = await httpRequest.get("/auth/users")
+    return response.data
+}
 
 const authService = {
     register,
     login,
-    logout
+    logout,
+    allUsers
 }
 export default authService

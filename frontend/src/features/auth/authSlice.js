@@ -1,20 +1,19 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import authService from '../auth/authService'
 import { toast } from 'react-toastify'
-import {addLocalStorageUser, getLocalStorageUser} from '../../utils/localStorage'
+import {addLocalStorageUser, getLocalStorageUser, deleteLocalStorageUser} from '../../utils/localStorage'
 
 const user = getLocalStorageUser()
 
 const initialState = {
     user: user ? user : '',
+    users: [],
     error: false,
-    success: false,
     loading: false,
     message: ''
 }
 
 export const register = createAsyncThunk('auth/register', async (user, thunkAPI) => {
-    // dispatch -> user
     try {
       return await authService.register(user)
     } catch (error) {
@@ -38,6 +37,14 @@ export const logout = createAsyncThunk('auth/logout', (_, thunkAPI) => {
     }
 })
 
+export const allUsers = createAsyncThunk('auth/allUsers', (_, thunkAPI) => {
+    try {
+      return authService.allUsers()
+    } catch (error) {
+        return thunkAPI.rejectWithValue(error.response.data)
+    }
+})
+
 export const authSlice = createSlice({
     name: 'auth',
     initialState,
@@ -45,7 +52,6 @@ export const authSlice = createSlice({
         reset: (state) => {
             state.loading = false
             state.error = false
-            state.success = false
             state.message = ''
         }
     },
@@ -56,9 +62,8 @@ export const authSlice = createSlice({
         })
         .addCase(register.fulfilled, (state, action) => {
             state.loading = false
-            state.success = true
-            state.user = action.payload
-            addLocalStorageUser(action.payload)
+            //state.user = action.payload
+            //addLocalStorageUser(action.payload)
             toast.success('user successfully registered')
         })
         .addCase(register.rejected, (state, action) => {
@@ -72,7 +77,6 @@ export const authSlice = createSlice({
         })
         .addCase(login.fulfilled, (state, action) => {
             state.loading = false
-            state.success = true
             state.user = action.payload
             addLocalStorageUser(action.payload)
             toast.success('user success login')
@@ -85,7 +89,11 @@ export const authSlice = createSlice({
         })
         .addCase(logout.fulfilled, (state) => {
             state.user = null
+            deleteLocalStorageUser()
             toast.success('User logout')
+        })
+        .addCase(allUsers.fulfilled, (state, action) => {
+            state.users = action.payload
         })
     }
 })

@@ -7,7 +7,6 @@ const initialState = {
     category: '',
     image: '',
     error: false,
-    success: false,
     loading: false,
 }
 
@@ -33,7 +32,12 @@ export const categorySlice = createSlice({
     reducers: {
      handleChange: (state, { payload: { name, value } }) => {
         state[name] = value
-     },
+    },
+    clearValues: () => {
+      return {
+        ...initialState,
+      }
+    }
     },
     extraReducers: (builder) => {
         builder
@@ -42,7 +46,6 @@ export const categorySlice = createSlice({
         })
         .addCase(categoryCreate.fulfilled, (state, action) => {
             state.loading = false
-            state.success = true
             toast.success('category added')
         })
         .addCase(categoryCreate.rejected, (state, action) => {
@@ -55,7 +58,6 @@ export const categorySlice = createSlice({
         })
         .addCase(getCategories.fulfilled, (state, action) => {
             state.loading = false
-            state.success = true
             state.categories = action.payload
         })
         .addCase(getCategories.rejected, (state, action) => {
@@ -65,5 +67,5 @@ export const categorySlice = createSlice({
     }
 })
 
-export const { handleChange } = categorySlice.actions;
+export const { handleChange, clearValues } = categorySlice.actions;
 export default categorySlice.reducer

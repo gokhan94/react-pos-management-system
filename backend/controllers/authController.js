@@ -55,13 +55,14 @@ const userLogin = async (req, res) => {
         if (!isCorrect) return res.status(404).send("Password not found")
    
         const token = createJWT(user._id)
-        res.cookie("accessToken", token, { httpOnly: true }).status(200)
+        res.cookie("accessToken", token, {
+            httpOnly: true, sameSite: 'strict', maxAge: 30 * 24 * 60 * 60 * 1000
+        }).status(200)
 
         res.status(201).json({
             _id:  user.id,
             name: user.name,
             email: user.email,
-            token: token
         })
         
     } catch (e) {
@@ -69,13 +70,26 @@ const userLogin = async (req, res) => {
     }
 }
 
+// @route   /api/auth/users
+// @desc    All Users
+const getAllUsers = async (req, res) => {
+    const users = await User.find({})
+    res.status(201).json(users)
+}
 
-const deleteUser = async (req, res) => {
-    res.status(200).json(req.user.email)
- }
+// @route   /api/auth/logout
+// @desc    User Logout
+const logout = (req, res) => {
+  res.cookie('accessToken', '', {
+    httpOnly: true,
+    expires: new Date(0),
+  });
+  res.status(200).json({ message: 'Logged out' });
+};
 
 module.exports = {
     userRegister,
     userLogin,
-    deleteUser
+    getAllUsers,
+    logout
 }

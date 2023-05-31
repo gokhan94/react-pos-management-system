@@ -1,21 +1,27 @@
 import React from 'react'
+import { useEffect } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
+import { getOrders } from '../features/order/orderSlice'
+import OrderItem from '../components/OrderItem'
 
 const Orders = () => {
+
+  const { orders } = useSelector((state) => state.order)
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    dispatch(getOrders())
+  }, [dispatch])
+
   return (
-       
-          <div className='order-details'>
-            <div className='order-title'>
-              <span className='order-id'>Orders: #90765</span>
-              <span className='order-time'>20:30 PM</span>
-            </div>
-            <div className='order-total'>
-              <span className='qta'>Qta : 7</span>
-              <span className='order-price-detail'>
-                <span className='order-price'>$ 40,49</span>
-                <span className='order-status'>Dine-in</span>
-              </span>
-            </div>
-          </div>
+  <>
+            {orders ? (orders.map((order) => 
+                <OrderItem key={order._id} order={order}/>
+              )
+            ) : (
+                "Loading..."
+      )}
+</>
  
   )
 }

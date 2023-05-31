@@ -1,25 +1,80 @@
-import React from 'react'
-import { FaTimes } from 'react-icons/fa';
+import { React, useEffect, useState } from 'react'
+import { FaHome, FaTimes } from 'react-icons/fa';
+import { toast } from 'react-toastify'
+import { useNavigate , Link } from 'react-router-dom'
+import { clearCart, increase, decrease, productSubTotal, productTotalAmount, productTax, removeCartItem } from '../features/cart/cartSlice'
+import { orderCreate } from '../features/order/orderSlice'
+import { useSelector, useDispatch } from 'react-redux'
+import { deleteLocalStorageCart } from '../utils/localStorage'
 
 const Cart = () => {
-    return (
-    
-    <div>
 
-    <div className='cart-container'>
-      <header className='cart-header'>
-          <a href='/' className='logo'>Shopping Cart</a>
-          <ul className='navigation'>
-              <li><a className='nav-link' href='/'>Home</a></li>
-              <li><a className='nav-link' href='/'>Users</a></li>
-              <li><a className='nav-link' href='/'>Products</a></li>
-              <li><a className='nav-link' href='/'>Cart</a></li>
-          </ul>
-        </header>
-    </div>
-            
+    const { cartItems, subTotal, totalAmount, tax } = useSelector((state) => state.cart)
+    const dispatch = useDispatch()
+    const navigate = useNavigate()
+
+    useEffect(() => {
+        dispatch(productSubTotal())   
+        dispatch(productTax())  
+        dispatch(productTotalAmount())  
+    }, [dispatch, cartItems])
+
+    const [customer, setCustomer] = useState('')
+    const [country,  setCountry] = useState('Turkey')
+    const [province, setProvince] = useState('Others')
+    const [zipcode,  setZipcode] = useState('')
+    const [phone,    setPhone] = useState('')
+    
+    const handleSubmit = (e) => {
+        e.preventDefault()
+        
+        const newOrder = {
+            customer,
+            country,
+            province,
+            zipcode,
+            phone,
+            cartItems,
+            subTotal,
+            totalAmount,
+            tax
+        }
+
+        if (customer !== '' || zipcode !== '' || phone !== '') {
+            dispatch(orderCreate(newOrder))
+            dispatch(clearCart())
+            deleteLocalStorageCart()
+            navigate('/dashboard/orders') 
+        } else {
+            toast.warning('Please fill in the required fields')
+        }
+        
+    }
+
+   if (cartItems.length === 0) {
+        return (
+            <div className='info-details' >
+                  <div className='icon-info'>
+                    <div className='icon'><Link to="/dashboard"> <FaHome className='icon-cart' /></Link></div>
+                    <span>Return to the main page and add products to the cart.</span>
+                  </div>
+            </div> 
+    )
+  }
+
+    return (
+    <div className='cart-page'>
+        <div className='cart-container'>
+        <header className='cart-header'>
+            <a href='/dashboard' className='logo'>Shopping Cart</a>
+            <ul className='navigation'>
+                <li><a className='nav-link' href='/dashboard'>Home</a></li>
+                <li><a className='nav-link' href='/'>Products</a></li>
+            </ul>
+            </header>
+            </div>
+
     <div id='shop-container'>
-                
         <section id='cart'>
         <table>
             <thead>
@@ -32,138 +87,128 @@ const Cart = () => {
                     <td>Subtotal</td>
                 </tr>
             </thead>
-            <tbody>
-                        <tr>
-                            <td>
-                                <a><FaTimes /></a>
+                 <tbody>
+                            
+              {cartItems ? cartItems.map((product) => 
+                <tr key={product.id}>
+                      <td>
+                          <button type='button' onClick={() => { dispatch(removeCartItem(product.id)) }}>
+                              <FaTimes />
+                         </button>
                             </td>
                             <td>
-                                <img src={require('../images/hamburger.png')} alt='...' />
+                             {product.image ? <img className='product-image' src={product.image} alt='...' />
+                                :
+                                <img className='default-image' src={require('../images/product.png')} alt='...' />
+                            }      
                             </td>
                             <td>
-                                Product Name
+                                { product.name }
                             </td>
                             <td>
-                                $ 18
+                                $ { product.price.toFixed(2) }
                             </td>
-                            <td><input type='number'></input></td>
-                            <td>$ 115</td>
-                        </tr>   
-                                                <tr>
-                            <td>
-                                <a><FaTimes /></a>
+                             <td>
+                                <div className='count'>
+                                    <button className='increment-btn' type='button' onClick={() => { dispatch(increase(product.id)) }}>+</button>
+                                    <span className='amount'>{ product.quantity }</span>
+                                    <button className='decrement-btn' type='button' onClick={() => { dispatch(decrease(product.id)) }}>-</button>
+                                </div>
                             </td>
-                            <td>
-                                 <img src={require('../images/hamburger.png')} alt='...'/>       
-                            </td>
-                            <td>
-                                Product Name
-                            </td>
-                            <td>
-                                $ 18
-                            </td>
-                            <td><input type='number'></input></td>
-                            <td>$ 115</td>
-                        </tr>  
-                                                <tr>
-                            <td>
-                                <a><FaTimes /></a>
-                            </td>
-                            <td>
-                                 <img src={require('../images/hamburger.png')} alt='...'/>       
-                            </td>
-                            <td>
-                                Product Name
-                            </td>
-                            <td>
-                                $ 18
-                            </td>
-                            <td><input className='qty-number' type='number'></input></td>
-                            <td>$ 115,66</td>
-                        </tr>  
+                            <td>$ { (product.price * product.quantity).toFixed(2) }</td>
+                        </tr>    
+
+              ) : (
+                    <div>Products Loading...</div>
+              )}
+
             </tbody>       
-        </table>   
-
-
-                
+        </table>         
         </section>
 
             
         <div className='cart-summary styled'>
-            <div className='item'>
-                <div className='coupon'>
-                    <input className='input-coupon' type='text' placeholder='enter cupon' />
-                    <button>Apply</button>
-                </div>  
-                    <div className='shipping-rate collapse'>
-                        <div className='has-child expand'>
-                                <a href='/'>SHIPPING TAX AND ESTIMATE</a>
-                                <div className='content'>
-                                    <div className='countries'>
-                                        <form>
-                                            <label htmlFor="country">Country</label>
-                                            <select name='country' id='country'>
-                                                <option value="1">ABD</option>
-                                                <option value="1">Albenia</option>
-                                                <option value="1">Others</option>
-                                                
-                                            </select>
-                                        </form>
-                                    </div>
-                                     <div className='states'>
-                                        <form>
-                                            <label htmlFor="state">State / Province</label>
-                                            <select name='country' id='country'>
-                                                <option value="1">ABD</option>
-                                                <option value="1">Albenia</option>
-                                                <option value="1">Others</option>
-                                                
-                                            </select>
-                                        </form>
-                                    </div>
-                                    <div className='postal-code'>
-                                        <form>
-                                            <label htmlFor="postal">Zipcode</label>
-                                            <input type='number' name='postal' id='postal'/>
-                                        </form>  
-                                    </div>
-
-                                </div>
-                         </div>     
+            <form onSubmit={handleSubmit}>   
+                <div className='item'>
+                    <div className='customer'>
+                        <input className='customer-name' name='customer' type='text' value={customer} onChange={(e) => setCustomer(e.target.value)} placeholder='enter customer' />
+                        <button>Customer</button>
                     </div>  
-                    <div className='cart-total-table'>
-                            <table>
-                                <tbody>
-                                    <tr>
-                                        <th>Subtotal</th>
-                                        <td>$21215</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Tax</th>
-                                        <td>$20</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Shipping</th>
-                                        <td>$10</td>
-                                    </tr>
-                                    <tr className='grand-total'>
-                                        <th>TOTAL</th>
-                                        <td><strong>$2065,95</strong></td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                            <div className='secondary-button'>
-                                <button type='submit'>Checkout</button>  
-                            </div> 
-                    </div>        
-            </div>
+                        <div className='shipping-rate collapse'>
+                            <div className='has-child expand'>
+                                    <h3>CUSTOMER INFORMATION</h3>
+                                    <div className='content'>
+                                        <div className='countries'>
+                                            
+                                            <div>
+                                                <label htmlFor='country'>Country</label>
+                                                <select name='country' id='country'
+                                                    value={country}
+                                                    onChange={(e) => setCountry(e.target.value)}>
+                                                    <option defaultValue="Turkey">Turkey</option>
+                                                    <option defaultValue="Albenia">Albenia</option>
+                                                    <option defaultValue="Others">Others</option>
+                                                    
+                                                </select>
+                                            </div>
+
+
+                                        </div>
+                                        <div className='states'>
+                                            <div>
+                                                <label htmlFor='province'>State / Province</label>
+                                                <select name='province'id='province'
+                                                    value={province}
+                                                    onChange={(e) => setProvince(e.target.value)}>
+                                                    <option defaultValue="Şeyhsinan Mah.">Şeyhsinan Mah.</option>
+                                                    <option defaultValue="Reşadiye Mah.">Reşadiye Mah.</option>
+                                                    <option defaultValue="Others">Others</option>
+                                                    
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div className='postal-code'>
+                                            <div>
+                                                <label htmlFor='zipcode'>Zipcode</label>
+                                                <input type='number' name='zipcode' id='zipcode' value={zipcode} onChange={(e) => setZipcode(e.target.value)} />
+                                            </div>  
+                                        </div>
+                                        <div className='postal-code'>
+                                            <div>
+                                                <label htmlFor='phone'>Phone Number</label>
+                                                <input type='number' name='phone' id='phone' value={phone} onChange={(e) => setPhone(e.target.value)} />
+                                            </div>  
+                                        </div>
+                                    </div>
+                            </div>     
+                        </div>  
+                        <div className='cart-total-table'>
+                                <table>
+                                    <tbody>
+                                        <tr>
+                                            <th>SubTotal:</th>
+                                            <td>$ { subTotal.toFixed(2) }</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Tax: % 8</th>
+                                            <td>$ { tax.toFixed(2) }</td>
+                                        </tr>
+                                        <tr className='grand-total'>
+                                            <th>TOTAL:</th>
+                                            <td><strong>$ { totalAmount.toFixed(2) }</strong></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <div className='secondary-button'>
+                                    <button type='submit'>Create Order</button>  
+                                </div> 
+                        </div>        
+                </div>
+            </form>       
+
         </div>
-
     </div>
-        
-
-         
-            
+     
     </div>
 
   )

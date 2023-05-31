@@ -1,6 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux'
-import { categoryCreate, handleChange } from '../features/category/categorySlice'
-//import { handleChange } from '../features/category/categorySlice'
+import { categoryCreate, handleChange, clearValues } from '../features/category/categorySlice'
 import { toast } from 'react-toastify'
 
 const AddCategory = () => {
@@ -14,9 +13,10 @@ const AddCategory = () => {
     if (!category) {
       toast.error("category error")
       return
+    } else {
+      dispatch(categoryCreate({ category, image }))
+      dispatch(clearValues())
     }
-    dispatch(categoryCreate({ category, image }))
-    
   }
   
   const onChange = (e) => {
@@ -41,13 +41,11 @@ return (
                   <input type="name" placeholder='Category Image' name='image' value={image} onChange={onChange} />  
               </div>    
 
-
               <div className="form-input">
                 <button className="product-btn">Add Category</button>
               </div>
               
             </form>
-
           </div>
   )
 }

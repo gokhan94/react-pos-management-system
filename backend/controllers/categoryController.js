@@ -20,7 +20,7 @@ const addCategory = async (req, res) => {
 // @route   /api/category/get-categories
 // @desc    Get Categories
 const getCategories = async (req, res) => { 
-   const categories = await Category.find({})
+    const categories = await Category.find({})
    res.status(200).json(categories)
 }
 

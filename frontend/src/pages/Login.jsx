@@ -1,15 +1,10 @@
 import React, { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { useNavigate } from 'react-router-dom'
 import { useSelector, useDispatch} from 'react-redux'
 import { login, reset } from '../features/auth/authSlice'
-import { FaHouseUser } from 'react-icons/fa';
-
-
 
 const Login = () => {
-
 
   const [form, setForm] = useState({
     email: "",
@@ -50,32 +45,26 @@ const Login = () => {
 
   return (
     <>
-      <div className='icons-container'>
-            
-        <Link to='/'>
-          <FaHouseUser className='icons' />
-        </Link> 
-        
-      </div>
-        <div className='auth-container'>
-              <form className='register-form' onSubmit={handleSubmit}>
+      <div className='auth-container'>
+          <form className='register-form' onSubmit={handleSubmit}>
                   
                 <h1>Login</h1>
 
                 <div className='formInput'>
-                  <label htmlFor="email">Email</label>   
+                  <label>Email</label>   
                   <input type="email" placeholder='Email' name='email' value={email} onChange={onChange}/>  
                 </div>     
                   
-                  
                 <div className='formInput'>
-                  <label htmlFor="password">Password</label>   
+                  <label>Password</label>   
                   <input type="password" placeholder='Password' name='password' value={password} onChange={onChange}/>  
                 </div>
 
-                <button type='submit' className='btn'>Log In</button>
-       
-          </form>
+                <button type='submit' className='btn-grad'>Log In</button>
+                
+              <div className='home'><a href='/'>Go to home page</a></div>
+        </form>
+        
           </div>
       </>
   )

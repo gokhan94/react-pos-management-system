@@ -4,7 +4,6 @@ const CategorySchema = new mongoose.Schema(
   {
     image: {
       type: String,
-      default: '/uploads/example.jpeg',
     },
     category: {
       type: String,

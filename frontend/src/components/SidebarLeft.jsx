@@ -1,27 +1,38 @@
 import React from 'react'
 import { useNavigate, Link } from 'react-router-dom'
-import { FaHome, FaList, FaShopify, FaUserCircle, FaUser, FaPizzaSlice } from 'react-icons/fa';
+import { FaHome, FaShoppingCart, FaShopify, FaUserCircle, FaSignInAlt, FaWpforms } from 'react-icons/fa';
+import { useSelector, useDispatch } from 'react-redux'
+import { logout, reset } from '../features/auth/authSlice'
 
 const SidebarLeft = () => {
+  const { user } = useSelector((state) => state.auth)
+
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
+
+    const logoutUser = () => {
+      dispatch(logout())
+      dispatch(reset())
+      navigate('/')
+  }
+
   return (
-        <div className='sidebarLeft'>
-
+        <>
           <div className='menu-links'>
-            
            <Link to="/dashboard"> <FaHome className='menu-icon' /> Home </Link>
-           <Link to="/dashboard/orders"> <FaShopify className='menu-icon' /> Order </Link>
-           <Link to="/dashboard/form"> <FaPizzaSlice className='menu-icon' />Add</Link>
-
-            <a href='/'><FaList className='menu-icon' />Table</a>
-            
+           <Link to="/dashboard/orders"> <FaShopify className='menu-icon' /> Orders </Link>
+           <Link to="/dashboard/form"> <FaWpforms className='menu-icon' />Form</Link>
+           <Link to="/cart"> <FaShoppingCart className='menu-icon' />Cart</Link>
           </div>
 
           <div className='user-info'>
-            <a href='/'><FaUser className='menu-icon' />Profile</a>
-            <a href='/'><FaUserCircle className='menu-icon' />Settings</a>
+            <div className='user-detail'>
+              <FaUserCircle className='user-icon' />
+              <span className='user'>{user.name}</span>
+            </div>
+            <button className='logout-btn' onClick={logoutUser}><FaSignInAlt className='logout-icon' /></button>
           </div>
-
-        </div>
+      </>      
   )
 }
 

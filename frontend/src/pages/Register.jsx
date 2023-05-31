@@ -24,7 +24,7 @@ const Register = () => {
       toast.error(message)
     }
     if (success || user) {
-      navigate('/dashboard')
+      navigate('/login')
     }
     dispatch(reset())
   }, [error, success, user, message, navigate, dispatch])
@@ -44,28 +44,33 @@ const Register = () => {
 
   return (
       <>
-        <div className='auth-container'>
+      <div className='auth-container'>
+        
+
+
+
               <form className='register-form' onSubmit={handleSubmit}>
                   
                 <h1>Register</h1>
                 <div className='formInput'>
-                    <label htmlFor="name">Name</label>   
+                    <label>Name</label>   
                     <input type="text" placeholder='Name' name='name' value={name} onChange={onChange} />  
                   </div>
          
                 <div className='formInput'>
-                  <label htmlFor="email">Email</label>   
+                  <label>Email</label>   
                   <input type="email" placeholder='Email' name='email' value={email} onChange={onChange} />  
                 </div>     
                   
                   
                 <div className='formInput'>
-                  <label htmlFor="password">Password</label>   
+                  <label>Password</label>   
                   <input type="password" placeholder='Password' name='password' value={password} onChange={onChange} />  
                 </div>
 
-                <button type='submit' className='btn'>Log In</button>
-       
+              <button type='submit' className='btn-grad'>Register</button>
+              
+             <div className='home'><a href='/'>Go to home page</a></div>
           </form>
           </div>
       </>
