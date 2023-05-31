@@ -1,6 +1,5 @@
 const express = require('express')
 const dotenv = require('dotenv').config()
-const PORT = process.env.PORT || 8000
 const connectDatabase = require('./config/database')
 const { errorHandler} = require('./middleware/errorMiddleware')
 const authRoutes = require('./routes/authRoutes')
@@ -41,4 +40,5 @@ app.use('/api/order', orderRoutes)
 app.use(errorHandler)
 
 // SERVER SETUP
+const PORT = process.env.PORT || 8000
 app.listen(PORT, () => console.log(`server on port ${PORT}`))

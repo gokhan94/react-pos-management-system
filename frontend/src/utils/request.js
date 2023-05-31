@@ -8,6 +8,8 @@ import axios from 'axios'
 }*/
 
 const httpRequest = axios.create({
+    "Access-Control-Allow-Origin": "*",
+    "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
     "Accept": "application/json",
     "Content-Type": "application/json",
     baseURL: "http://localhost:5000/api",
