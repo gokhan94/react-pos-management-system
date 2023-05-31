@@ -56,9 +56,12 @@ const userLogin = async (req, res) => {
    
         const token = createJWT(user._id)
         res.cookie("accessToken", token, {
-           
+            domain: process.env.NODE_ENV === 'development' ? '.localhost' : '.domain.com',
+            httpOnly: true,
+            sameSite: 'strict',
             maxAge: 30 * 24 * 60 * 60 * 1000,
         }).status(200)
+
 
         res.status(201).json({
             _id:  user.id,
