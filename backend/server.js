@@ -19,8 +19,14 @@ const app = express()
     credentials:true,  //access-control-allow-credentials:true
 }
 
+
 app.use(cors(corsOptions))*/
-app.use(cors())
+const corsOrigin ={
+    origin:'http://localhost:3000', //or whatever port your frontend is using
+    credentials:true,            
+    optionSuccessStatus:200
+}
+app.use(cors(corsOrigin))
 
 app.use(cookieParser())
 app.use(express.json())
