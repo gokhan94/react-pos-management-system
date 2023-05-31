@@ -15,7 +15,7 @@ const httpRequest = axios.create({
         "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS"
     },
     baseURL: "https://react-pos-management-system.vercel.app/api",
-    withCredentials: true,
+    withCredentials: false,
 })
 
 export default httpRequest
