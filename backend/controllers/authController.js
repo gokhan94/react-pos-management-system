@@ -56,9 +56,9 @@ const userLogin = async (req, res) => {
    
         const token = createJWT(user._id)
         res.cookie("accessToken", token, {
-            domain: '.react-pos-management-system-qmcf.com',
             httpOnly: true,
             sameSite: 'none',
+            secure: true,
             maxAge: 30 * 24 * 60 * 60 * 1000,
         }).status(200)
 

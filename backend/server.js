@@ -22,9 +22,12 @@ const app = express()
 
 app.use(cors(corsOptions))*/
 const corsOrigin ={
-    origin:'https://react-pos-management-system-qmcf.vercel.app', 
+    origin: [
+        'http://localhost:3000',
+        'https://react-pos-management-system.vercel.app',
+        'https://react-pos-management-system-qmcf.vercel.app',
+    ], 
     credentials:true,            
-    optionSuccessStatus:200
 }
 app.use(cors(corsOrigin))
 
