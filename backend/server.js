@@ -14,14 +14,7 @@ connectDatabase()
 
 const app = express()
 
-/*const corsOptions = {
-    origin:'http://localhost:3000', 
-    credentials:true,  //access-control-allow-credentials:true
-}
-
-
-app.use(cors(corsOptions))*/
-const corsOrigin ={
+const corsOrigin = {
     origin: [
         'http://localhost:3000',
         'https://react-pos-management-system.vercel.app',
