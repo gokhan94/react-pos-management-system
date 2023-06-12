@@ -40,6 +40,7 @@ const Register = () => {
       name, email, password
     }
     dispatch(register(userData))
+    navigate('/login')
   }
 
   return (

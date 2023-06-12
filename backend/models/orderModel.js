@@ -35,13 +35,15 @@ const OrderSchema = mongoose.Schema(
       type: Number,
       required: true,
     },
-
-    /*user: {
+    payment: {
+      type: String,
+      require: true 
+    },
+    user: {
       type: mongoose.Schema.ObjectId,
       ref: 'User',
       required: true,
-    },*/
-
+    },
   },
   { timestamps: true }
 );

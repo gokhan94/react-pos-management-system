@@ -1,5 +1,4 @@
 const User = require('../models/userModel')
-const jwt = require('jsonwebtoken')
 const bcrypt = require('bcryptjs')
 const {createJWT} = require('../utils/jwt')
 // @route   /api/auth/register
@@ -9,7 +8,6 @@ const userRegister = async (req, res) => {
     
     if (!name || !email) {
         return res.status(404).send("User form empty")
-        //throw new Error('please include')
     }
 
     // Check if user exists
@@ -67,6 +65,7 @@ const userLogin = async (req, res) => {
             _id:  user.id,
             name: user.name,
             email: user.email,
+            admin: user.isAdmin
         })
         
     } catch (e) {

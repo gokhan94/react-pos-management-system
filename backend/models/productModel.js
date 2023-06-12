@@ -24,14 +24,12 @@ const ProductSchema = new mongoose.Schema(
     category: {
       type: String,
       required: [true, 'Please provide product category'],
-        },
-    
-   /* user: {
+    },
+    user: {
       type: mongoose.Types.ObjectId,
       ref: 'User',
       required: true,
-        },*/
-    
+    },
   },
   { timestamps: true, toJSON: { virtuals: true }, toObject: { virtuals: true } }
 );

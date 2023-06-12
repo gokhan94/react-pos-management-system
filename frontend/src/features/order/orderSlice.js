@@ -24,6 +24,14 @@ export const getOrders = createAsyncThunk('order/getOrders', async (_, thunkAPI)
     }
 })
 
+export const removeOrder = createAsyncThunk('product/removeOrder', async (order, thunkAPI) => {
+    try {
+        return await orderService.removeOrder(order, thunkAPI)
+    } catch (error) {
+         return thunkAPI.rejectWithValue(error.response.data)
+    }
+})
+
 export const orderSlice = createSlice({
     name: 'product',
     initialState,
@@ -51,6 +59,17 @@ export const orderSlice = createSlice({
             state.loading = false
             state.error = true
         })  
+        .addCase(removeOrder.pending, (state) => {
+            state.loading = true
+        })
+        .addCase(removeOrder.fulfilled, (state, action) => {
+            state.loading = false
+            toast.success('order successfully deleted')
+        })
+        .addCase(removeOrder.rejected, (state, action) => {
+            state.loading = false
+            state.error = true
+        }) 
     }
 })
 

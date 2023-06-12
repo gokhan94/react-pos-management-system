@@ -23,7 +23,8 @@ const addProduct = async (req, res) => {
         stock,
         image,
         price,
-        category
+        category,
+        user: req.user._id
     })  
 
     res.status(201).json(product)  
@@ -33,6 +34,12 @@ const addProduct = async (req, res) => {
 // @desc    Update Product
 const updateProduct = async (req, res) => { 
     const { product } = req.body
+    
+    if (product.user.toString() !== req.user.id) {
+        res.status(401)
+        throw new Error('A user can only update the product they added')
+    }
+
     const updateProduct = await Product.findByIdAndUpdate(
         { _id: product.id },
         product,
@@ -55,15 +62,16 @@ const removeProduct = async (req, res) => {
     const { product: productId } = req.params;
 
     const product = await Product.findOne({ _id: productId })
-    
+
     if (!product) {
             res.status(400)
             throw new Error('Please fill in the blanks')  
     }
-    /*  if (ticket.user.toString() !== req.user.id) {
-    res.status(401)
-    throw new Error('Not Authorized')
-  }*/
+
+     if (product.user.toString() !== req.user.id) {
+        res.status(401)
+        throw new Error('A user can only delete the product they added')
+    }
 
     await product.deleteOne()
     res.status(201).json(product)

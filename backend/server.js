@@ -28,7 +28,6 @@ app.use(cookieParser())
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 
-
 // ROUTES
 app.get('/', (req, res) => {
     res.send('Welcome')

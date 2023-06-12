@@ -106,6 +106,7 @@ export const productSlice = createSlice({
         .addCase(editProduct.rejected, (state, action) => {
             state.loading = false
             state.error = true
+            toast.error('error product')
         }) 
         .addCase(categoryProductFilter.pending, (state) => {
             state.loading = true
@@ -126,6 +127,7 @@ export const productSlice = createSlice({
             // update products state
             let removeProduct = state.products.filter(item => item.id !== action.payload.id)
             state.products = removeProduct
+            toast.success('product successfully deleted')
         })
         .addCase(removeProduct.rejected, (state, action) => {
             state.loading = false
