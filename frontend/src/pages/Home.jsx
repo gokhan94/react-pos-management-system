@@ -29,7 +29,7 @@ const Home = () => {
           - Ability to easily track and categorize products. <br />- Creating
           orders and invoicing created orders.
           <br />- Ability to edit and delete products and orders according to
-          authorization status
+          authorization status.
         </p>
       </div>
       <div className="background_image">
