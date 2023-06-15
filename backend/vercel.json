@@ -6,14 +6,21 @@
             "use": "@vercel/node"
         }
     ],
-    "routes": [
+    "rewrites": [
+        { "source": "/(.*)", "destination": "server.js" }
+    ],
+    "headers": [
         {
-            "src": "/(.*)",
-            "dest": "server.js",
-            "methods": ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
-            "headers": {
-                "Access-Control-Allow-Origin": "*"
-            }
-        }
+          "source": "/(.*)",
+          "headers": [
+            { "key": "Access-Control-Allow-Origin", "value": "*" }
+          ]
+        },
+        {
+          "source": "/react-pos-management-system-qmcf.vercel.app/(.*)",
+          "headers": [
+            { "key": "Access-Control-Allow-Origin", "value": "*" }
+          ]
+        }  
     ]
   }
