@@ -14,10 +14,10 @@ A simple ordering system using React, Redux Toolkit and Mongodb.
 1. Node.js 16+
 2. Use npm package manager to install pos management on your computer.
 ```
-3.  cd / backend "npm install"
+3.  cd /backend "npm install"
 ```
 ```
-4.  cd / frontend "npm install"
+4.  cd /frontend "npm install"
 ```
 ```
 5.  "npm run dev"
