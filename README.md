@@ -2,7 +2,7 @@
 
 A simple ordering system using React, Redux Toolkit and Mongodb.
 
-# Features
+## Features
 
 * Basic Stock Management.
 * Filter products by categories.
